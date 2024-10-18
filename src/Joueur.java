@@ -11,10 +11,6 @@ public class Joueur {
         return idJoueur;
     }
 
-    public void setIdJoueur(int idJoueur) {
-        this.idJoueur = idJoueur;
-    }
-
     public String getNom() {
         return nom;
     }
