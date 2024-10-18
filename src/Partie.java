@@ -6,13 +6,17 @@ public class Partie {
     private int solution;
     private Timestamp date_debut;
     private Timestamp date_fin;
+    private int nb_essai;
+    private int nb_position;
     private String etat_partie;
 
-    public Partie( int idPartie, int solution, Timestamp date_debut, Timestamp date_fin, String etat_partie) {
+    public Partie( int idPartie, int solution, Timestamp date_debut, Timestamp date_fin, int nb_essai, int nb_position, String etat_partie) {
         this.idPartie = idPartie;
         this.solution = solution;
         this.date_debut = date_debut;
         this.date_fin = date_fin;
+        this.nb_essai = nb_essai;
+        this.nb_position =nb_position;
         this.etat_partie = etat_partie;
 
     }
@@ -45,6 +49,22 @@ public class Partie {
         this.date_fin = date_fin;
     }
 
+    public int getNbEssaie() {
+        return nb_essai;
+    }
+
+    public void setNbEssai(int nb_essai) {
+        this.nb_essai = nb_essai;
+    }
+
+    public int getNbPosition() {
+        return nb_position;
+    }
+
+    public void setNbPosition(int nb_position) {
+        this.nb_position = nb_position;
+    }
+
     public String getEtatPartie() {
         return etat_partie;
     }
@@ -58,6 +78,8 @@ public class Partie {
         System.out.println("Solution : " + solution);
         System.out.println("Date de debut de partie : " + date_debut);
         System.out.println("Date de fin de partie : " + date_fin);
+        System.out.println("Nombre d'essai de la partie : " + nb_essai);
+        System.out.println("Nombre de position de la solution : " + nb_position);
         System.out.println("Etat de la partie : " + etat_partie);
     }
 }
