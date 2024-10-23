@@ -2,8 +2,7 @@ public class Joueur {
     private int idJoueur;
     private String nom;
 
-    public Joueur(int idJoueur, String nom) {
-        this.idJoueur = idJoueur;
+    public Joueur(String nom) {
         this.nom = nom;
     }
 
@@ -20,7 +19,6 @@ public class Joueur {
     }
 
     public void afficherInfos() {
-        System.out.println("ID Joueur: " + idJoueur);
         System.out.println("Nom Joueur: " + nom);
     }
 }
