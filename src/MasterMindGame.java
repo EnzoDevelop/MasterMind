@@ -52,6 +52,12 @@ public class MasterMindGame extends JFrame {
     private void validerEssai() {
         if (essaiCourant >= nombreEssais) {
             JOptionPane.showMessageDialog(this, "Nombre maximum d'essais atteint. La partie est terminée.", "Fin de Partie", JOptionPane.INFORMATION_MESSAGE);
+
+            // Afficher la solution si le joueur a perdu
+            partie.setEtatPartie("Perdu");
+            partie.setDateFin(new Timestamp(System.currentTimeMillis()));
+            resultatArea.append("Vous avez perdu. La solution était : " + partie.getSolution() + "\n");
+
             return;
         }
 
@@ -81,4 +87,5 @@ public class MasterMindGame extends JFrame {
             JOptionPane.showMessageDialog(this, "Veuillez entrer un nombre valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }
