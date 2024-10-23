@@ -6,7 +6,6 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Bienvenue dans MasterMind");
-        frame.setSize(400, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
@@ -51,6 +50,8 @@ public class Main {
             frame.dispose(); // Fermer la fenêtre d'entrée
         });
 
+        // Maximiser la fenêtre pour qu'elle prenne tout l'écran
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
 }
