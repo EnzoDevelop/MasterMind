@@ -60,6 +60,6 @@ public class Essai {
     }
 
     public void afficherInfos() {
-        System.out.println("");
+        System.out.println("s");
     }
 }
