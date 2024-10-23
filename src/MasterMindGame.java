@@ -70,7 +70,6 @@ public class MasterMindGame extends JFrame {
 
             // Créer un nouvel essai
             Essai essai = new Essai(essaiCourant, 0, 0, essaiCourant, false, String.valueOf(essaiValue)); // À ajuster si besoin
-            essai.afficherInfos(); // Affiche les infos de l'essai
 
             // Afficher les résultats
             resultatArea.append("Résultat pour l'essai " + essaiValue + ": " + resultat + "\n");
