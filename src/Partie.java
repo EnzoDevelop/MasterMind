@@ -82,4 +82,39 @@ public class Partie {
         System.out.println("Nombre de position de la solution : " + nb_position);
         System.out.println("Etat de la partie : " + etat_partie);
     }
+
+    public String verifierEssai(int essai) {
+        StringBuilder resultat = new StringBuilder();
+        String solutionStr = String.valueOf(solution);
+        String essaiStr = String.valueOf(essai);
+
+        // Tableau pour marquer les positions déjà vérifiées
+        boolean[] verifieeSolution = new boolean[solutionStr.length()];
+        boolean[] verifieeEssai = new boolean[essaiStr.length()];
+
+        // Vérification des bien placés
+        for (int i = 0; i < solutionStr.length(); i++) {
+            if (solutionStr.charAt(i) == essaiStr.charAt(i)) {
+                resultat.append("#");
+                verifieeSolution[i] = true;
+                verifieeEssai[i] = true;
+            }
+        }
+
+        // Vérification des mal placés
+        for (int i = 0; i < essaiStr.length(); i++) {
+            if (!verifieeEssai[i]) {
+                for (int j = 0; j < solutionStr.length(); j++) {
+                    if (!verifieeSolution[j] && essaiStr.charAt(i) == solutionStr.charAt(j)) {
+                        resultat.append("o");
+                        verifieeSolution[j] = true; // Marquer comme vérifié
+                        break; // Ne pas compter plusieurs fois
+                    }
+                }
+            }
+        }
+
+        return resultat.toString();
+    }
+
 }
