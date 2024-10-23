@@ -58,8 +58,4 @@ public class Essai {
     public void setCouleursEssai(String couleurs_essai) {
         this.couleurs_essai = couleurs_essai;
     }
-
-    public void afficherInfos() {
-        System.out.println("s");
-    }
 }
