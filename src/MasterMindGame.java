@@ -2,150 +2,215 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MasterMindGame extends JFrame {
-    private List<Joueur> joueurs; // Liste des joueurs
-    private Partie partie; // Partie en cours
-    private int nombreEssais; // Nombre maximum d'essais
-    private JTextField essaiField; // Champ pour entrer l'essai
-    private JTextArea resultatArea; // Zone de texte pour afficher les résultats
-    private JButton validerButton; // Bouton pour valider l'essai
-    private int essaiCourant; // Essai actuel
+    private List<Joueur> joueurs;
+    private Partie partie;
+    private int nombreEssais;
+    private int essaiCourant;
+    private int positions;
+    private JButton nouvellePartieButton;
+    private JTextArea resultatArea;
+    private JButton validerButton;
+    private JPanel displaySelectionPanel;
+    private List<String> currentSelection;
+
+    private static final Map<Integer, String> colorMap = Map.of(
+            1, "Rouge", 2, "Vert", 3, "Bleu", 4, "Blanc", 5, "Noir", 6, "Jaune");
+
+    private static final Map<String, Color> colorDisplayMap = Map.of(
+            "Rouge", Color.RED, "Vert", Color.GREEN, "Bleu", Color.BLUE,
+            "Blanc", Color.WHITE, "Noir", Color.BLACK, "Jaune", Color.YELLOW);
 
     public MasterMindGame(List<Joueur> joueurs, int positions, int essais) {
         this.joueurs = joueurs;
+        this.positions = positions;
         this.nombreEssais = essais;
         this.essaiCourant = 0;
-        positions = 8;
+        this.currentSelection = new ArrayList<>();
 
         Random random = new Random();
         StringBuilder solutionBuilder = new StringBuilder();
-
-        // Générer une solution aléatoire de 8 chiffres
         for (int i = 0; i < positions; i++) {
-            int digit = random.nextInt(9) + 1; // Génère un chiffre entre 1 et 9
-            solutionBuilder.append(digit); // Ajoute le chiffre à la solution
+            int digit = random.nextInt(6) + 1;
+            solutionBuilder.append(digit);
         }
-
-        // Convertir la solution en entier
         int solution = Integer.parseInt(solutionBuilder.toString());
         partie = PartieFactory.createPartie(1, solution, new Timestamp(System.currentTimeMillis()), null, 0, positions, "En cours");
 
-        // Configurer la fenêtre
         setTitle("MasterMind - " + joueurs.size() + " Joueurs");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
 
-        // Configurer le layout principal
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10));
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        Font font = new Font("SansSerif", Font.PLAIN, 18);
+        JPanel colorPanel = new JPanel(new FlowLayout());
+        colorPanel.setBackground(new Color(45, 52, 54));
+        JLabel colorLabel = new JLabel("Sélectionnez les couleurs : ");
+        colorLabel.setForeground(Color.WHITE);
+        colorPanel.add(colorLabel);
 
-        // Panneau pour l'entrée de l'essai
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout());
-        inputPanel.setBackground(new Color(45, 52, 54));
+        for (String color : colorMap.values()) {
+            JButton colorButton = new JButton();
+            colorButton.setPreferredSize(new Dimension(60, 60));
+            colorButton.setBackground(colorDisplayMap.get(color));
+            colorButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 3));
+            colorButton.setContentAreaFilled(false);
+            colorButton.setOpaque(true);
+            colorButton.setBorderPainted(true);
+            colorButton.setFocusPainted(false);
+            colorButton.addActionListener(e -> addColorToSelection(color));
+            colorPanel.add(colorButton);
+        }
 
-        JLabel essaiLabel = new JLabel("Essai (8 chiffres) :");
-        essaiLabel.setFont(font);
-        essaiLabel.setForeground(Color.WHITE);
+        JPanel selectionPanel = new JPanel(new FlowLayout());
+        selectionPanel.setBackground(new Color(45, 52, 54));
+        JLabel selectionLabel = new JLabel("Votre sélection : ");
+        selectionLabel.setForeground(Color.WHITE);
+        selectionPanel.add(selectionLabel);
 
-        essaiField = new JTextField(10);
-        essaiField.setFont(font);
-        essaiField.setBackground(new Color(99, 110, 114));
-        essaiField.setForeground(Color.WHITE);
-        essaiField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        displaySelectionPanel = new JPanel();
+        displaySelectionPanel.setPreferredSize(new Dimension(400, 50));
+        displaySelectionPanel.setBackground(Color.LIGHT_GRAY);
+        selectionPanel.add(displaySelectionPanel);
 
         validerButton = new JButton("Valider Essai");
-        validerButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         validerButton.setBackground(new Color(178, 190, 195));
         validerButton.setFocusPainted(false);
-        validerButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        validerButton.addActionListener(e -> validerEssai());
 
-        // Ajout des composants d'entrée
-        inputPanel.add(essaiLabel);
-        inputPanel.add(essaiField);
-        inputPanel.add(validerButton);
-
-        // Panneau pour afficher les résultats
         resultatArea = new JTextArea(10, 30);
         resultatArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         resultatArea.setEditable(false);
         resultatArea.setBackground(new Color(99, 110, 114));
         resultatArea.setForeground(Color.WHITE);
-        resultatArea.setBorder(BorderFactory.createLineBorder(new Color(45, 52, 54), 5));
 
-        // Panneau de défilement pour les résultats
+        nouvellePartieButton = new JButton("Nouvelle Partie");
+        nouvellePartieButton.setBackground(new Color(178, 190, 195));
+        nouvellePartieButton.setFocusPainted(false);
+        nouvellePartieButton.addActionListener(e -> retourAccueil());
+        nouvellePartieButton.setVisible(false);
+
         JScrollPane scrollPane = new JScrollPane(resultatArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // Ajout des panneaux à la fenêtre
-        mainPanel.add(inputPanel, BorderLayout.NORTH);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        JPanel buttonPanel = new JPanel(new FlowLayout()); // Use FlowLayout for centering
+        buttonPanel.setBackground(new Color(45, 52, 54));
+        buttonPanel.add(validerButton);
+        buttonPanel.add(nouvellePartieButton);
+
+        mainPanel.add(colorPanel, BorderLayout.NORTH);
+        mainPanel.add(selectionPanel, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.SOUTH);
+        mainPanel.add(validerButton, BorderLayout.EAST);
 
         add(mainPanel);
+    }
 
-        // Action du bouton
-        validerButton.addActionListener(e -> validerEssai());
+    private void addColorToSelection(String color) {
+        if (currentSelection.size() < positions) {
+            currentSelection.add(color);
+            updateSelectionDisplay();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vous avez atteint la limite de " + positions + " couleurs.");
+        }
+    }
+
+    private void updateSelectionDisplay() {
+        displaySelectionPanel.removeAll();
+        for (String color : currentSelection) {
+            JPanel colorSquare = new JPanel();
+            colorSquare.setBackground(colorDisplayMap.get(color));
+            colorSquare.setPreferredSize(new Dimension(40, 40));
+            displaySelectionPanel.add(colorSquare);
+        }
+        displaySelectionPanel.revalidate();
+        displaySelectionPanel.repaint();
     }
 
     private void validerEssai() {
-        if (essaiCourant >= nombreEssais) {
-            JOptionPane.showMessageDialog(this, "Nombre maximum d'essais atteint. La partie est terminée.", "Fin de Partie", JOptionPane.INFORMATION_MESSAGE);
-
-            // Afficher la solution si le joueur a perdu
-            partie.setEtatPartie("Perdu");
-            partie.setDateFin(new Timestamp(System.currentTimeMillis()));
-            partie.miseAJourPartieDansBDD(); // Mettre à jour la partie dans la BDD
-            resultatArea.append("Vous avez perdu. La solution était : " + partie.getSolution() + "\n");
-
+        if (currentSelection.size() != positions) {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner " + positions + " couleurs.");
             return;
         }
 
-        try {
-            int essaiValue = Integer.parseInt(essaiField.getText());
-
-            // Vérification de la longueur de l'essai
-            if (String.valueOf(essaiValue).length() != 8) {
-                JOptionPane.showMessageDialog(this, "Vous devez entrer exactement 8 chiffres.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            essaiCourant++;
-
-            // Vérifier l'essai et obtenir le résultat
-            String resultat = partie.verifierEssai(essaiValue);
-
-            // On suppose que nous prenons le premier joueur pour l'essai
-            int id_joueur = joueurs.get(0).getIdJoueur(); // Récupérer l'ID du joueur actuel (pour simplifier)
-
-            // Créer un nouvel essai
-            int id_partie = partie.getIdPartie();
-            Essai essai = new Essai(essaiCourant, 0, 0, essaiCourant, false, String.valueOf(essaiValue), id_joueur, id_partie);
-
-            essai.insererEssaiDansBDD();
-
-            // Afficher les résultats
-            resultatArea.append("Essai " + essaiCourant + " : " + essaiValue + " -> " + resultat + "\n");
-
-            // Vérifier si le joueur a gagné
-            if (resultat.equals("#".repeat(partie.getNbPosition()))) {
-                partie.setEtatPartie("Finis"); // Mettre l'état à "Finis"
-                partie.setDateFin(new Timestamp(System.currentTimeMillis()));
-                partie.miseAJourPartieDansBDD(); // Mettre à jour la partie dans la BDD
-                resultatArea.append("Vous avez gagné en " + essaiCourant + " essais!\n");
-            } else {
-                resultatArea.append("Essai incorrect. Réessayez ! (Essais restants : " + (nombreEssais - essaiCourant) + ")\n");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Veuillez entrer un nombre valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        StringBuilder essaiCode = new StringBuilder();
+        for (String color : currentSelection) {
+            essaiCode.append(getKeyFromColor(color));
         }
+
+        String solutionCode = String.valueOf(partie.getSolution());
+        int bienPlaces = 0;
+        int malPlaces = 0;
+
+        boolean[] solutionUsed = new boolean[positions];
+        boolean[] essaiUsed = new boolean[positions];
+
+        for (int i = 0; i < positions; i++) {
+            if (essaiCode.charAt(i) == solutionCode.charAt(i)) {
+                bienPlaces++;
+                solutionUsed[i] = true;
+                essaiUsed[i] = true;
+            }
+        }
+
+        for (int i = 0; i < positions; i++) {
+            if (!essaiUsed[i]) {
+                for (int j = 0; j < positions; j++) {
+                    if (!solutionUsed[j] && essaiCode.charAt(i) == solutionCode.charAt(j)) {
+                        malPlaces++;
+                        solutionUsed[j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        List<String> essaiCouleurs = new ArrayList<>();
+        for (char code : essaiCode.toString().toCharArray()) {
+            int key = Character.getNumericValue(code);
+            essaiCouleurs.add(colorMap.get(key));
+        }
+
+        if (bienPlaces == positions) {
+            // Afficher le pop-up de victoire
+            JPanel messagePanel = new JPanel();
+            messagePanel.add(new JLabel("C'est gagné !"));
+
+            JButton accueilButton = new JButton("Retour à l'accueil");
+            accueilButton.addActionListener(e -> retourAccueil());
+            messagePanel.add(accueilButton);
+
+            JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
+        }
+
+        currentSelection.clear();
+        updateSelectionDisplay();
+    }
+
+
+
+    private int getKeyFromColor(String color) {
+        for (Map.Entry<Integer, String> entry : colorMap.entrySet()) {
+            if (entry.getValue().equals(color)) {
+                return entry.getKey();
+            }
+        }
+        throw new IllegalArgumentException("La couleur " + color + " n'existe pas dans colorMap.");
+    }
+
+    private void retourAccueil() {
+        this.dispose(); // Close the current window
+        PageAccueil accueil = new PageAccueil(); // Create a new instance of the home page
+        accueil.setVisible(true); // Show the home page
     }
 }
