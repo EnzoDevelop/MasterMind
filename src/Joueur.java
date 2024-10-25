@@ -4,12 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Joueur {
-    private int id_joueur;
-    private String nom;
+    private int id_joueur; // ID du joueur
+    private String nom; // Nom du joueur
 
+    // Constructeur
     public Joueur(String nom) {
         this.nom = nom;
-        this.id_joueur = id_joueur; // Insertion dans la base de données lors de la création de l'objet Joueur
+        insererJoueurDansBDD(); // Insérer le joueur dans la base de données lors de la création
     }
 
     public int getIdJoueur() {

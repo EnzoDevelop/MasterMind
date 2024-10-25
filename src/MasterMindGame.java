@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Random;
 
 public class MasterMindGame extends JFrame {
-    private List<Joueur> joueurs;
-    private Partie partie;
-    private int nombreEssais;
-    private JTextField essaiField;
-    private JTextArea resultatArea;
-    private JButton validerButton;
-    private int essaiCourant;
+    private List<Joueur> joueurs; // Liste des joueurs
+    private Partie partie; // Partie en cours
+    private int nombreEssais; // Nombre maximum d'essais
+    private JTextField essaiField; // Champ pour entrer l'essai
+    private JTextArea resultatArea; // Zone de texte pour afficher les résultats
+    private JButton validerButton; // Bouton pour valider l'essai
+    private int essaiCourant; // Essai actuel
 
     public MasterMindGame(List<Joueur> joueurs, int positions, int essais) {
         this.joueurs = joueurs;
@@ -122,6 +122,9 @@ public class MasterMindGame extends JFrame {
             // Vérifier l'essai et obtenir le résultat
             String resultat = partie.verifierEssai(essaiValue);
 
+            // On suppose que nous prenons le premier joueur pour l'essai
+            int id_joueur = joueurs.get(0).getIdJoueur(); // Récupérer l'ID du joueur actuel (pour simplifier)
+
             // Créer un nouvel essai
             int id_partie = partie.getIdPartie();
             Essai essai = new Essai(essaiCourant, 0, 0, essaiCourant, false, String.valueOf(essaiValue), id_joueur, id_partie);
@@ -146,4 +149,3 @@ public class MasterMindGame extends JFrame {
         }
     }
 }
-
