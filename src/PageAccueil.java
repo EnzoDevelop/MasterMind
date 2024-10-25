@@ -4,21 +4,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class PageAccueil extends JFrame {
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        JFrame frame = new JFrame("Bienvenue dans MasterMind");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // taille maxim écran
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setLocationRelativeTo(null);
+    public PageAccueil() {
+        setTitle("Bienvenue dans MasterMind");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -82,7 +74,7 @@ public class Main {
         mainPanel.add(commencerButton);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        frame.add(mainPanel);
+        add(mainPanel);
 
         // Ajout d'une action pour le bouton "Commencer la Partie"
         commencerButton.addActionListener(e -> {
@@ -91,7 +83,7 @@ public class Main {
             String joueursText = joueursField.getText();
 
             if (positionsText.isEmpty() || essaisText.isEmpty() || joueursText.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -110,10 +102,20 @@ public class Main {
                 game.setVisible(true);
             });
 
-            frame.dispose(); // Fermer la fenêtre d'entrée
+            dispose(); // Fermer la fenêtre d'accueil
         });
+    }
 
-        // Rendre la fenêtre visible
-        frame.setVisible(true);
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            PageAccueil accueil = new PageAccueil();
+            accueil.setVisible(true);
+        });
     }
 }
