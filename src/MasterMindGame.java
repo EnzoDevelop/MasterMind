@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MasterMindGame extends JFrame {
-    private List<Joueur> joueurs;
+    private List<Joueur> joueurs; // Liste des joueurs
     private Partie partie;
     private int nombreEssais;
     private JTextArea resultatArea;
@@ -50,7 +50,7 @@ public class MasterMindGame extends JFrame {
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Panneau de sélection des couleurs avec boutons circulaires et bordures épaisses
+        // Panneau de sélection des couleurs
         JPanel colorPanel = new JPanel(new FlowLayout());
         colorPanel.setBackground(new Color(45, 52, 54));
         JLabel colorLabel = new JLabel("Sélectionnez les couleurs : ");
@@ -59,9 +59,9 @@ public class MasterMindGame extends JFrame {
 
         for (String color : colorMap.values()) {
             JButton colorButton = new JButton();
-            colorButton.setPreferredSize(new Dimension(60, 60)); // Taille des boutons
+            colorButton.setPreferredSize(new Dimension(60, 60));
             colorButton.setBackground(colorDisplayMap.get(color));
-            colorButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 3)); // Bordure épaisse
+            colorButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 3));
             colorButton.setContentAreaFilled(false);
             colorButton.setOpaque(true);
             colorButton.setBorderPainted(true);
@@ -169,15 +169,9 @@ public class MasterMindGame extends JFrame {
         }
 
         if (bienPlaces == positions) {
-            // Afficher le pop-up de victoire
-            JPanel messagePanel = new JPanel();
-            messagePanel.add(new JLabel("C'est gagné !"));
-
-            JButton accueilButton = new JButton("Retour à l'accueil");
-            accueilButton.addActionListener(e -> retourAccueil());
-            messagePanel.add(accueilButton);
-
-            JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
+            // Afficher le pop-up de victoire avec le nom du premier joueur
+            String nomJoueur = joueurs.get(0).getNom();  // Utiliser le nom du joueur principal
+            finDePartie(nomJoueur, true);
         } else {
             resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
         }
@@ -186,7 +180,24 @@ public class MasterMindGame extends JFrame {
         updateSelectionDisplay();
     }
 
+    private void finDePartie(String nomJoueur, boolean victoire) {
+        partie.setEtatPartie("Fini");
+        partie.setDateFin(new Timestamp(System.currentTimeMillis()));
+        partie.miseAJourPartieDansBDD();
 
+        String message = victoire ? "Victoire de " + nomJoueur + " !" : "Défaite ! La solution était : " + partie.getSolution();
+
+        JPanel messagePanel = new JPanel();
+        messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
+        messagePanel.add(new JLabel(message));
+
+        JButton accueilButton = new JButton("Retour à l'accueil");
+        accueilButton.addActionListener(e -> retourAccueil());
+        messagePanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        messagePanel.add(accueilButton);
+
+        JOptionPane.showMessageDialog(this, messagePanel, "Fin de Partie", JOptionPane.INFORMATION_MESSAGE);
+    }
 
     private int getKeyFromColor(String color) {
         for (Map.Entry<Integer, String> entry : colorMap.entrySet()) {
@@ -198,10 +209,8 @@ public class MasterMindGame extends JFrame {
     }
 
     private void retourAccueil() {
-        this.dispose(); // Ferme la fenêtre actuelle
-        PageAccueil accueil = new PageAccueil(); // Créer une nouvelle instance de la page de création de partie
-        accueil.setVisible(true); // Afficher la page d'accueil
+        this.dispose();
+        PageAccueil accueil = new PageAccueil();
+        accueil.setVisible(true);
     }
-
-
 }
