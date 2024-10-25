@@ -9,14 +9,18 @@ public class Essai {
     private int num_tour;
     private boolean verif_essai;
     private String couleurs_essai;
+    private int id_joueur;
+    private int id_partie;
 
-    public Essai(int id_essai, int bien_places, int mal_places, int num_tour, boolean verif_essai, String couleurs_essai) {
+    public Essai(int id_essai, int bien_places, int mal_places, int num_tour, boolean verif_essai, String couleurs_essai, int id_joueur, int id_partie) {
         this.id_essai = id_essai;
         this.bien_places = bien_places;
         this.mal_places = mal_places;
         this.num_tour = num_tour;
         this.verif_essai = verif_essai;
         this.couleurs_essai = couleurs_essai;
+        this.id_joueur = id_joueur; // Add this line if it exists
+        this.id_partie = id_partie;
     }
 
     public int getIdEssai() {
@@ -43,6 +47,10 @@ public class Essai {
         return couleurs_essai;
     }
 
+    public int getIdPartie() {
+        return id_partie;
+    }
+
     public void setBienPlaces(int bien_places) {
         this.bien_places = bien_places;
     }
@@ -63,9 +71,13 @@ public class Essai {
         this.couleurs_essai = couleurs_essai;
     }
 
+    public void setIdPartie(int id_partie) {
+        this.id_partie = id_partie;
+    }
+
     // Méthode pour insérer l'essai dans la base de données
     public void insererEssaiDansBDD() {
-        String insertEssaiSQL = "INSERT INTO Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai) VALUES (?, ?, ?, ?, ?)";
+        String insertEssaiSQL = "INSERT INTO Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai, id_partie, id_joueur) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertEssaiSQL)) {
@@ -74,10 +86,11 @@ public class Essai {
             pstmt.setInt(3, num_tour);
             pstmt.setBoolean(4, verif_essai);
             pstmt.setString(5, couleurs_essai);
+            pstmt.setInt(6, id_partie);
+            pstmt.setInt(7, id_joueur); // Ajoutez cette ligne pour définir id_joueur
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 }
-// dz

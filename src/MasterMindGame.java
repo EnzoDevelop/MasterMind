@@ -18,9 +18,7 @@ public class MasterMindGame extends JFrame {
         this.joueurs = joueurs;
         this.nombreEssais = essais;
         this.essaiCourant = 0;
-
-        // Assurez-vous que la solution contient exactement 8 positions
-        positions = 8;  // Fixe le nombre de positions à 8
+        positions = 8;
 
         Random random = new Random();
         StringBuilder solutionBuilder = new StringBuilder();
@@ -39,15 +37,14 @@ public class MasterMindGame extends JFrame {
         setTitle("MasterMind - " + joueurs.size() + " Joueurs");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setLocationRelativeTo(null); // Centrer la fenêtre
+        setLocationRelativeTo(null);
 
         // Configurer le layout principal
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10)); // Espacement entre les composants
+        mainPanel.setLayout(new BorderLayout(10, 10));
         mainPanel.setBackground(new Color(45, 52, 54));
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Padding autour du contenu
+        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // Police moderne pour les labels et les champs
         Font font = new Font("SansSerif", Font.PLAIN, 18);
 
         // Panneau pour l'entrée de l'essai
@@ -126,8 +123,10 @@ public class MasterMindGame extends JFrame {
             String resultat = partie.verifierEssai(essaiValue);
 
             // Créer un nouvel essai
-            Essai essai = new Essai(essaiCourant, 0, 0, essaiCourant, false, String.valueOf(essaiValue));
-            essai.insererEssaiDansBDD(); // Insérer l'essai dans la base de données
+            int id_partie = partie.getIdPartie();
+            Essai essai = new Essai(essaiCourant, 0, 0, essaiCourant, false, String.valueOf(essaiValue), id_joueur, id_partie);
+
+            essai.insererEssaiDansBDD();
 
             // Afficher les résultats
             resultatArea.append("Essai " + essaiCourant + " : " + essaiValue + " -> " + resultat + "\n");
@@ -146,6 +145,5 @@ public class MasterMindGame extends JFrame {
             JOptionPane.showMessageDialog(this, "Veuillez entrer un nombre valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }
-// dz
+
