@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class Essai {
     private int id_essai;
     private int bien_places;
@@ -57,5 +61,22 @@ public class Essai {
 
     public void setCouleursEssai(String couleurs_essai) {
         this.couleurs_essai = couleurs_essai;
+    }
+
+    // Méthode pour insérer l'essai dans la base de données
+    public void insererEssaiDansBDD() {
+        String insertEssaiSQL = "INSERT INTO Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(insertEssaiSQL)) {
+            pstmt.setInt(1, bien_places);
+            pstmt.setInt(2, mal_places);
+            pstmt.setInt(3, num_tour);
+            pstmt.setBoolean(4, verif_essai);
+            pstmt.setString(5, couleurs_essai);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
