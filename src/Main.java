@@ -22,8 +22,8 @@ public class Main {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(45, 52, 54)); // Couleur de fond sombre moderne
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Padding
+        mainPanel.setBackground(new Color(45, 52, 54));
+        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         Font font = new Font("SansSerif", Font.PLAIN, 18);
 
