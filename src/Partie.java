@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class Partie {
 
@@ -124,7 +121,8 @@ public class Partie {
         String insertPartieSQL = "INSERT INTO Partie (solution, date_debut, date_fin, nb_essai, nb_position, etat_partie) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(insertPartieSQL)) {
+             PreparedStatement pstmt = conn.prepareStatement(insertPartieSQL,PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             pstmt.setInt(1, this.solution);
             pstmt.setTimestamp(2, this.date_debut);
             pstmt.setTimestamp(3, this.date_fin);
@@ -132,21 +130,34 @@ public class Partie {
             pstmt.setInt(5, this.nb_position);
             pstmt.setString(6, this.etat_partie);
 
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            int dernierId = 0;
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    dernierId = generatedKeys.getInt(1);
+                    System.out.println("Dernier ID inséré : " + dernierId);
+                } else {
+                    System.out.println("Aucun ID généré.");
+                }
+            }
+            System.out.println("Rows affected: " + rowsAffected);
+            this.idPartie = dernierId;
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void miseAJourPartieDansBDD() {
-        String updatePartieSQL = "UPDATE Partie SET date_fin = ?, etat_partie = ?, nb_essai = ? WHERE id_partie = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(updatePartieSQL)) {
+    public void miseAJourPartieDansBDD() {
+        String updatePartieSQL = "UPDATE Partie SET date_fin = ?, etat_partie = ? WHERE id_partie = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection()){
+             System.out.println("coucou");
+             System.out.println(this.idPartie);
+             PreparedStatement pstmt = conn.prepareStatement(updatePartieSQL);
             pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             pstmt.setString(2, this.etat_partie);
-            pstmt.setInt(3, this.nb_essai);
-            pstmt.setInt(4, this.idPartie);
+            pstmt.setInt(3, this.idPartie);
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

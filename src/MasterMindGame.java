@@ -192,6 +192,10 @@ public class MasterMindGame extends JFrame {
         }
 
         if (bienPlaces == positions) {
+            // Mets à jour l’état de la partie à "Fini" en cas de victoire
+            partie.setEtatPartie("fini");
+            partie.miseAJourPartieDansBDD();
+
             JPanel messagePanel = new JPanel();
             messagePanel.add(new JLabel("C'est gagné !"));
 
@@ -204,11 +208,14 @@ public class MasterMindGame extends JFrame {
             resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
 
             if (essaiCourant >= nombreEssais) {
+                // Mets à jour l’état de la partie à "Fini" en cas de défaite
+                partie.setEtatPartie("fini");
+                partie.miseAJourPartieDansBDD();
+
                 // Création d'un panel pour afficher la solution avec des cases de couleurs
                 JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
                 messagePanel.add(new JLabel("Vous avez perdu ! La solution était :"), BorderLayout.NORTH);
 
-                // Panel pour les cases de couleurs
                 JPanel colorSolutionPanel = new JPanel(new FlowLayout());
                 for (char code : solutionCode.toCharArray()) {
                     int key = Character.getNumericValue(code);
@@ -227,12 +234,12 @@ public class MasterMindGame extends JFrame {
                 JOptionPane.showMessageDialog(this, messagePanel, "Défaite", JOptionPane.INFORMATION_MESSAGE);
                 MainMenu();
             }
-
         }
 
         currentSelection.clear();
         updateSelectionDisplay();
     }
+
 
 
 
