@@ -151,6 +151,8 @@ public class MasterMindGame extends JFrame {
             return;
         }
 
+        essaiCourant++;  // Incrémente le compteur d'essais
+
         StringBuilder essaiCode = new StringBuilder();
         for (String color : currentSelection) {
             essaiCode.append(getKeyFromColor(color));
@@ -200,11 +202,17 @@ public class MasterMindGame extends JFrame {
             JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
         } else {
             resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
+
+            if (essaiCourant >= nombreEssais) {
+                JOptionPane.showMessageDialog(this, "Vous avez perdu ! La solution était : " + solutionCode, "Défaite", JOptionPane.INFORMATION_MESSAGE);
+                MainMenu();
+            }
         }
 
         currentSelection.clear();
         updateSelectionDisplay();
     }
+
 
 
 

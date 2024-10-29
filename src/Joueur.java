@@ -9,7 +9,11 @@ public class Joueur {
 
     public Joueur(String nom) {
         this.nom = nom;
-        insererJoueurDansBDD();
+        if (!existeDeja(nom)) {
+            insererJoueurDansBDD();
+        } else {
+            System.out.println("Le joueur avec le nom " + nom + " existe déjà dans la base de données. Insertion annulée.");
+        }
     }
 
     public int getIdJoueur() {
