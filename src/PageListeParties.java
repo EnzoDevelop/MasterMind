@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class OngoingGamesPage extends JFrame {
-    public OngoingGamesPage() {
+public class PageListeParties extends JFrame {
+    public PageListeParties() {
         setTitle("Liste des Parties - MasterMind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);

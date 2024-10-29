@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.SQLException;
 
-public class PlayerDAO {
+public class JoueurDAO {
     public List<String> getPlayers() {
         List<String> players = new ArrayList<>();
         String query = "SELECT pseudo_joueur FROM joueurs";

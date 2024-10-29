@@ -3,8 +3,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
 
-public class RankingPage extends JFrame {
-    public RankingPage() {
+public class PageClassement extends JFrame {
+    public PageClassement() {
         setTitle("Classement des Joueurs - MasterMind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -21,7 +21,7 @@ public class RankingPage extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        PlayerDAO playerDAO = new PlayerDAO();
+        JoueurDAO playerDAO = new JoueurDAO();
         List<String> players = playerDAO.getPlayers();
 
         String[] columnNames = {"Pseudo Joueur", "Partie Gagnée", "Partie Perdu"};
@@ -33,7 +33,6 @@ public class RankingPage extends JFrame {
             tableData[i][2] = "0";
         }
 
-        // Création du JTable
         JTable table = new JTable(tableData, columnNames);
         table.setFont(new Font("SansSerif", Font.PLAIN, 16));
         table.setRowHeight(30);
@@ -47,7 +46,6 @@ public class RankingPage extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Bouton retour
         JButton backButton = new JButton("Retour au Menu Principal");
         backButton.setFont(new Font("SansSerif", Font.PLAIN, 20));
         backButton.setBackground(new Color(178, 190, 195));
@@ -64,7 +62,7 @@ public class RankingPage extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            RankingPage rankingPage = new RankingPage();
+            PageClassement rankingPage = new PageClassement();
             rankingPage.setVisible(true);
         });
     }

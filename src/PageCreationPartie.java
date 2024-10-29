@@ -4,9 +4,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PageAccueil extends JFrame {
+public class PageCreationPartie extends JFrame {
 
-    public PageAccueil() {
+    public PageCreationPartie() {
         setTitle("Bienvenue dans MasterMind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -56,6 +56,25 @@ public class PageAccueil extends JFrame {
         commencerButton.setFocusPainted(false);
         commencerButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
+        JButton retourButton = new JButton("Retour au Menu Principal");
+        retourButton.setFont(new Font("SansSerif", Font.BOLD, 20));
+        retourButton.setBackground(new Color(178, 190, 195));
+        retourButton.setForeground(Color.BLACK);
+        retourButton.setFocusPainted(false);
+        retourButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        retourButton.addActionListener(e -> {
+            dispose();
+            MainMenu menu = new MainMenu();
+            menu.setVisible(true);
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        buttonPanel.setBackground(new Color(45, 52, 54));
+
+        buttonPanel.add(commencerButton);
+        buttonPanel.add(retourButton);
+
         mainPanel.add(positionsLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(positionsField);
@@ -70,10 +89,7 @@ public class PageAccueil extends JFrame {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         mainPanel.add(joueursField);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        mainPanel.add(commencerButton);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
+        mainPanel.add(buttonPanel);
         add(mainPanel);
 
         commencerButton.addActionListener(e -> {
@@ -96,7 +112,7 @@ public class PageAccueil extends JFrame {
             }
 
             SwingUtilities.invokeLater(() -> {
-                MasterMindGame game = new MasterMindGame(joueurs, positions, essais);
+                JeuMasterMind game = new JeuMasterMind(joueurs, positions, essais);
                 game.setVisible(true);
             });
 
@@ -112,7 +128,7 @@ public class PageAccueil extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            PageAccueil accueil = new PageAccueil();
+            PageCreationPartie accueil = new PageCreationPartie();
             accueil.setVisible(true);
         });
     }

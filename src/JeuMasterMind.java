@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MasterMindGame extends JFrame {
+public class JeuMasterMind extends JFrame {
     private List<Joueur> joueurs;
     private Partie partie;
     private int nombreEssais;
@@ -26,11 +26,11 @@ public class MasterMindGame extends JFrame {
             "Rouge", Color.RED, "Vert", Color.GREEN, "Bleu", Color.BLUE,
             "Blanc", Color.WHITE, "Noir", Color.BLACK, "Jaune", Color.YELLOW);
 
-    public MasterMindGame(List<Joueur> joueurs, int positions, int essais) {
+    public JeuMasterMind(List<Joueur> joueurs, int positions, int essais) {
         this.joueurs = new ArrayList<>();
         for (Joueur joueur : joueurs) {
             if (!Joueur.existeDeja(joueur.getNom())) {
-                this.joueurs.add(new Joueur(joueur.getNom())); // ajoute le joueur s'il n'existe pas encore
+                this.joueurs.add(new Joueur(joueur.getNom()));
             } else {
                 System.out.println("Le joueur " + joueur.getNom() + " existe déjà dans la base de données et ne sera pas ajouté.");
             }
@@ -55,7 +55,6 @@ public class MasterMindGame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
 
-        // Configuration de l'interface utilisateur, inchangée
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -151,7 +150,7 @@ public class MasterMindGame extends JFrame {
             return;
         }
 
-        essaiCourant++;  // Incrémente le compteur d'essais
+        essaiCourant++;
 
         StringBuilder essaiCode = new StringBuilder();
         for (String color : currentSelection) {
@@ -192,7 +191,6 @@ public class MasterMindGame extends JFrame {
         }
 
         if (bienPlaces == positions) {
-            // Mets à jour l’état de la partie à "Fini" en cas de victoire
             partie.setEtatPartie("fini");
             partie.miseAJourPartieDansBDD();
 
@@ -208,11 +206,9 @@ public class MasterMindGame extends JFrame {
             resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
 
             if (essaiCourant >= nombreEssais) {
-                // Mets à jour l’état de la partie à "Fini" en cas de défaite
                 partie.setEtatPartie("fini");
                 partie.miseAJourPartieDansBDD();
 
-                // Création d'un panel pour afficher la solution avec des cases de couleurs
                 JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
                 messagePanel.add(new JLabel("Vous avez perdu ! La solution était :"), BorderLayout.NORTH);
 
@@ -239,11 +235,6 @@ public class MasterMindGame extends JFrame {
         currentSelection.clear();
         updateSelectionDisplay();
     }
-
-
-
-
-
 
     private int getKeyFromColor(String color) {
         for (Map.Entry<Integer, String> entry : colorMap.entrySet()) {

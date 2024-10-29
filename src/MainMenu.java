@@ -45,17 +45,17 @@ public class MainMenu extends JFrame {
             switch (text) {
                 case "Créer une partie":
                     dispose();
-                    PageAccueil accueil = new PageAccueil();
+                    PageCreationPartie accueil = new PageCreationPartie();
                     accueil.setVisible(true);
                     break;
                 case "Classement":
                     dispose();
-                    RankingPage rankingPage = new RankingPage();
+                    PageClassement rankingPage = new PageClassement();
                     rankingPage.setVisible(true);
                     break;
                 case "Liste des parties":
                     dispose();
-                    OngoingGamesPage ongoingGamesPage = new OngoingGamesPage();
+                    PageListeParties ongoingGamesPage = new PageListeParties();
                     ongoingGamesPage.setVisible(true);
                     break;
             }
