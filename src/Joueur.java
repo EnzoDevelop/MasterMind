@@ -48,4 +48,23 @@ public class Joueur {
             e.printStackTrace();
         }
     }
+
+    public static boolean existeDeja(String nom) {
+        String verifierJoueurSQL = "SELECT 1 FROM Joueurs WHERE pseudo_joueur = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(verifierJoueurSQL)) {
+
+            pstmt.setString(1, nom);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next(); // Renvoie vrai si un résultat existe, donc le nom est déjà dans la BDD
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

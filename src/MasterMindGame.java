@@ -27,7 +27,15 @@ public class MasterMindGame extends JFrame {
             "Blanc", Color.WHITE, "Noir", Color.BLACK, "Jaune", Color.YELLOW);
 
     public MasterMindGame(List<Joueur> joueurs, int positions, int essais) {
-        this.joueurs = joueurs;
+        this.joueurs = new ArrayList<>();
+        for (Joueur joueur : joueurs) {
+            if (!Joueur.existeDeja(joueur.getNom())) {
+                this.joueurs.add(new Joueur(joueur.getNom())); // ajoute le joueur s'il n'existe pas encore
+            } else {
+                System.out.println("Le joueur " + joueur.getNom() + " existe déjà dans la base de données et ne sera pas ajouté.");
+            }
+        }
+
         this.positions = positions;
         this.nombreEssais = essais;
         this.essaiCourant = 0;
@@ -40,13 +48,14 @@ public class MasterMindGame extends JFrame {
             solutionBuilder.append(digit);
         }
         int solution = Integer.parseInt(solutionBuilder.toString());
-        partie = PartieFactory.createPartie(1, solution, new Timestamp(System.currentTimeMillis()), null, 0, positions, "En cours");
+        partie = PartieFactory.createPartie(1, solution, new Timestamp(System.currentTimeMillis()), null, essais, positions, "En cours");
 
-        setTitle("MasterMind - " + joueurs.size() + " Joueurs");
+        setTitle("MasterMind - " + this.joueurs.size() + " Joueurs");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
 
+        // Configuration de l'interface utilisateur, inchangée
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -113,6 +122,7 @@ public class MasterMindGame extends JFrame {
 
         add(mainPanel);
     }
+
 
     private void addColorToSelection(String color) {
         if (currentSelection.size() < positions) {
