@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class OngoingGamesPage extends JFrame {
     public OngoingGamesPage() {
@@ -13,17 +14,26 @@ public class OngoingGamesPage extends JFrame {
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JTextArea ongoingGamesArea = new JTextArea(20, 50);
-        ongoingGamesArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        ongoingGamesArea.setEditable(false);
-        ongoingGamesArea.setBackground(new Color(99, 110, 114));
-        ongoingGamesArea.setForeground(Color.WHITE);
+        String[] columnNames = {"ID Partie", "Nb Essai", "Nb Position", "Etat Partie"};
+        PartieDAO partieDAO = new PartieDAO();
+        List<Partie> parties = partieDAO.getParties();
 
-        ongoingGamesArea.setText("Liste des Parties en Cours\n\n");
-        ongoingGamesArea.append("Partie 1: Joueur1 vs Joueur2\n");
-        ongoingGamesArea.append("Partie 2: Joueur3 vs Joueur4\n");
+        Object[][] data = new Object[parties.size()][4];
+        for (int i = 0; i < parties.size(); i++) {
+            Partie partie = parties.get(i);
+            data[i][0] = partie.getIdPartie();
+            data[i][1] = partie.getNbEssaie();
+            data[i][2] = partie.getNbPosition();
+            data[i][3] = partie.getEtatPartie();
+        }
 
-        JScrollPane scrollPane = new JScrollPane(ongoingGamesArea);
+        JTable table = new JTable(data, columnNames);
+        table.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        table.setRowHeight(25);
+        table.setBackground(new Color(99, 110, 114));
+        table.setForeground(Color.WHITE);
+
+        JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
