@@ -8,13 +8,15 @@ import java.sql.SQLException;
 public class PlayerDAO {
     public List<String> getPlayers() {
         List<String> players = new ArrayList<>();
+        String query = "SELECT pseudo_joueur FROM joueurs";
+
         try (Connection connection = DatabaseConnection.getConnection();
-             Statement statement = connection.createStatement()) {
-            String query = "SELECT pseudo_joueur FROM joueurs";
-            ResultSet resultSet = statement.executeQuery(query);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                players.add(resultSet.getString("pseudo_joueur"));
+                String pseudo = resultSet.getString("pseudo_joueur");
+                players.add(pseudo);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,10 +8,11 @@ public class MainMenu extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
 
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(45, 52, 54));
+        BackgroundPanel mainPanel = new BackgroundPanel("images/background.jpg");
+        mainPanel.setLayout(new GridBagLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // Boutons
         JButton createGameButton = createMenuButton("Créer une partie");
         JButton rankingButton = createMenuButton("Classement");
         JButton ongoingGamesButton = createMenuButton("Liste des parties");
@@ -69,3 +70,25 @@ public class MainMenu extends JFrame {
         });
     }
 }
+
+class BackgroundPanel extends JPanel {
+    private Image backgroundImage;
+
+    public BackgroundPanel(String fileName) {
+        try {
+            backgroundImage = new ImageIcon(getClass().getResource("/" + fileName)).getImage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Image non trouvée : " + fileName);
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+}
+

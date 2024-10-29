@@ -9,7 +9,7 @@ public class OngoingGamesPage extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -23,15 +23,21 @@ public class OngoingGamesPage extends JFrame {
         ongoingGamesArea.append("Partie 1: Joueur1 vs Joueur2\n");
         ongoingGamesArea.append("Partie 2: Joueur3 vs Joueur4\n");
 
+        JScrollPane scrollPane = new JScrollPane(ongoingGamesArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
         JButton backButton = new JButton("Retour au Menu Principal");
+        backButton.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        backButton.setBackground(new Color(178, 190, 195));
+        backButton.setForeground(Color.BLACK);
         backButton.addActionListener(e -> {
             dispose();
             MainMenu menu = new MainMenu();
             menu.setVisible(true);
         });
 
-        mainPanel.add(new JScrollPane(ongoingGamesArea));
-        mainPanel.add(backButton);
+        mainPanel.add(backButton, BorderLayout.SOUTH);
         add(mainPanel);
     }
 }

@@ -24,26 +24,30 @@ public class RankingPage extends JFrame {
         PlayerDAO playerDAO = new PlayerDAO();
         List<String> players = playerDAO.getPlayers();
 
-        JTextArea playersArea = new JTextArea();
-        playersArea.setEditable(false);
-        playersArea.setBackground(new Color(99, 110, 114));
-        playersArea.setForeground(Color.WHITE);
-        playersArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        String[] columnNames = {"Pseudo Joueur", "Partie Gagnée", "Partie Perdu"};
 
-        if (players.isEmpty()) {
-            playersArea.setText("Aucun joueur trouvé.");
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (String player : players) {
-                sb.append(player).append("\n");
-            }
-            playersArea.setText(sb.toString());
+        String[][] tableData = new String[players.size()][3];
+        for (int i = 0; i < players.size(); i++) {
+            tableData[i][0] = players.get(i);
+            tableData[i][1] = "0";
+            tableData[i][2] = "0";
         }
 
-        JScrollPane scrollPane = new JScrollPane(playersArea);
+        // Création du JTable
+        JTable table = new JTable(tableData, columnNames);
+        table.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        table.setRowHeight(30);
+        table.setBackground(new Color(99, 110, 114));
+        table.setForeground(Color.WHITE);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 18));
+        table.getTableHeader().setBackground(new Color(178, 190, 195));
+        table.getTableHeader().setForeground(Color.BLACK);
+
+        JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Bouton retour
         JButton backButton = new JButton("Retour au Menu Principal");
         backButton.setFont(new Font("SansSerif", Font.PLAIN, 20));
         backButton.setBackground(new Color(178, 190, 195));
