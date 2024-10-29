@@ -4,13 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Joueur {
-    private int id_joueur; // ID du joueur
-    private String nom; // Nom du joueur
+    private int id_joueur;
+    private String nom;
 
     // Constructeur
     public Joueur(String nom) {
         this.nom = nom;
-        insererJoueurDansBDD(); // Insérer le joueur dans la base de données lors de la création
+        insererJoueurDansBDD();
     }
 
     public int getIdJoueur() {
@@ -29,7 +29,7 @@ public class Joueur {
         System.out.println("Nom Joueur: " + nom);
     }
 
-    // Méthode pour insérer le joueur dans la base de données
+
     private void insererJoueurDansBDD() {
         String insertJoueurSQL = "INSERT INTO Joueurs (pseudo_joueur) VALUES (?)";
 
@@ -39,10 +39,10 @@ public class Joueur {
             pstmt.setString(1, this.nom);
             pstmt.executeUpdate();
 
-            // Récupérer l'id généré et le stocker dans id_joueur
+
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id_joueur = generatedKeys.getInt(1); // Affecte l'id généré à id_joueur
+                    this.id_joueur = generatedKeys.getInt(1);
                 }
             }
         } catch (SQLException e) {

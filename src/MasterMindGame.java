@@ -95,7 +95,7 @@ public class MasterMindGame extends JFrame {
         nouvellePartieButton = new JButton("Nouvelle Partie");
         nouvellePartieButton.setBackground(new Color(178, 190, 195));
         nouvellePartieButton.setFocusPainted(false);
-        nouvellePartieButton.addActionListener(e -> retourAccueil());
+        nouvellePartieButton.addActionListener(e -> MainMenu());
         nouvellePartieButton.setVisible(false);
 
         JScrollPane scrollPane = new JScrollPane(resultatArea);
@@ -184,9 +184,9 @@ public class MasterMindGame extends JFrame {
             JPanel messagePanel = new JPanel();
             messagePanel.add(new JLabel("C'est gagné !"));
 
-            JButton accueilButton = new JButton("Retour à l'accueil");
-            accueilButton.addActionListener(e -> retourAccueil());
-            messagePanel.add(accueilButton);
+            JButton MainMenuButton = new JButton("Retour à l'accueil");
+            MainMenuButton.addActionListener(e -> MainMenu());
+            messagePanel.add(MainMenuButton);
 
             JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -208,9 +208,9 @@ public class MasterMindGame extends JFrame {
         throw new IllegalArgumentException("La couleur " + color + " n'existe pas dans colorMap.");
     }
 
-    private void retourAccueil() {
+    private void MainMenu() {
         this.dispose(); // Close the current window
-        PageAccueil accueil = new PageAccueil(); // Create a new instance of the home page
-        accueil.setVisible(true); // Show the home page
+        MainMenu MainMenu = new MainMenu(); // Create a new instance of the home page
+        MainMenu.setVisible(true); // Show the home page
     }
 }
