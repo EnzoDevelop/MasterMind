@@ -180,7 +180,6 @@ public class MasterMindGame extends JFrame {
         }
 
         if (bienPlaces == positions) {
-            // Afficher le pop-up de victoire
             JPanel messagePanel = new JPanel();
             messagePanel.add(new JLabel("C'est gagné !"));
 
@@ -209,8 +208,8 @@ public class MasterMindGame extends JFrame {
     }
 
     private void MainMenu() {
-        this.dispose(); // Close the current window
-        MainMenu MainMenu = new MainMenu(); // Create a new instance of the home page
-        MainMenu.setVisible(true); // Show the home page
+        this.dispose();
+        MainMenu MainMenu = new MainMenu();
+        MainMenu.setVisible(true);
     }
 }

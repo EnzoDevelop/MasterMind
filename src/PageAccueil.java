@@ -95,13 +95,12 @@ public class PageAccueil extends JFrame {
                 joueurs.add(new Joueur(nom.trim()));
             }
 
-            // Lancer le jeu MasterMind
             SwingUtilities.invokeLater(() -> {
                 MasterMindGame game = new MasterMindGame(joueurs, positions, essais);
                 game.setVisible(true);
             });
 
-            dispose(); // Fermer la fenêtre d'accueil
+            dispose();
         });
     }
 

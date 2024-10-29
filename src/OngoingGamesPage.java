@@ -25,8 +25,8 @@ public class OngoingGamesPage extends JFrame {
 
         JButton backButton = new JButton("Retour au Menu Principal");
         backButton.addActionListener(e -> {
-            dispose(); // Close the ongoing games page
-            MainMenu menu = new MainMenu(); // Navigate back to the main menu
+            dispose();
+            MainMenu menu = new MainMenu();
             menu.setVisible(true);
         });
 

@@ -22,7 +22,7 @@ public class Partie {
         this.nb_position = nb_position;
         this.etat_partie = etat_partie;
 
-        insererPartieDansBDD(); // Insertion dans la base de données à la création de la partie
+        insererPartieDansBDD();
     }
 
     public int getIdPartie() {
@@ -77,13 +77,11 @@ public class Partie {
         this.etat_partie = etat_partie;
     }
 
-    // Méthode pour vérifier l'essai
     public String verifierEssai(int essai) {
         StringBuilder resultat = new StringBuilder();
         String solutionStr = String.valueOf(solution);
         String essaiStr = String.valueOf(essai);
 
-        // Tableau pour marquer les positions déjà vérifiées
         boolean[] verifieeSolution = new boolean[solutionStr.length()];
         boolean[] verifieeEssai = new boolean[essaiStr.length()];
 
@@ -102,8 +100,8 @@ public class Partie {
                 for (int j = 0; j < solutionStr.length(); j++) {
                     if (!verifieeSolution[j] && essaiStr.charAt(i) == solutionStr.charAt(j)) {
                         resultat.append("o");
-                        verifieeSolution[j] = true; // Marquer comme vérifié
-                        break; // Ne pas compter plusieurs fois
+                        verifieeSolution[j] = true;
+                        break;
                     }
                 }
             }
@@ -122,7 +120,6 @@ public class Partie {
         System.out.println("Etat de la partie : " + etat_partie);
     }
 
-    // Méthode pour insérer la partie dans la base de données
     private void insererPartieDansBDD() {
         String insertPartieSQL = "INSERT INTO Partie (solution, date_debut, date_fin, nb_essai, nb_position, etat_partie) VALUES (?, ?, ?, ?, ?, ?)";
 

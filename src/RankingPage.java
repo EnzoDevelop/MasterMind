@@ -24,14 +24,12 @@ public class RankingPage extends JFrame {
         PlayerDAO playerDAO = new PlayerDAO();
         List<String> players = playerDAO.getPlayers();
 
-        // Create a text area to display the player list
         JTextArea playersArea = new JTextArea();
         playersArea.setEditable(false);
         playersArea.setBackground(new Color(99, 110, 114));
         playersArea.setForeground(Color.WHITE);
         playersArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
-        // Populate the text area with player usernames
         if (players.isEmpty()) {
             playersArea.setText("Aucun joueur trouvé.");
         } else {

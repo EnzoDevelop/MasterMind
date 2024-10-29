@@ -8,29 +8,26 @@ public class MainMenu extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
 
-        // Main panel with GridBagLayout for centering
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(new Color(45, 52, 54));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Create buttons
         JButton createGameButton = createMenuButton("Créer une partie");
         JButton rankingButton = createMenuButton("Classement");
         JButton ongoingGamesButton = createMenuButton("Liste des parties");
 
-        // Add buttons to the panel with GridBagConstraints for centering
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0; // column
-        gbc.gridy = 0; // row
-        gbc.insets = new Insets(20, 0, 20, 0); // space around buttons
-        gbc.anchor = GridBagConstraints.CENTER; // center the button
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(20, 0, 20, 0);
+        gbc.anchor = GridBagConstraints.CENTER;
 
         mainPanel.add(createGameButton, gbc);
 
-        gbc.gridy = 1; // move to the next row
+        gbc.gridy = 1;
         mainPanel.add(rankingButton, gbc);
 
-        gbc.gridy = 2; // move to the next row
+        gbc.gridy = 2;
         mainPanel.add(ongoingGamesButton, gbc);
 
         add(mainPanel);
@@ -46,18 +43,18 @@ public class MainMenu extends JFrame {
         button.addActionListener(e -> {
             switch (text) {
                 case "Créer une partie":
-                    dispose(); // Close the main menu
-                    PageAccueil accueil = new PageAccueil(); // Navigate to the game creation page
+                    dispose();
+                    PageAccueil accueil = new PageAccueil();
                     accueil.setVisible(true);
                     break;
                 case "Classement":
-                    dispose(); // Close the main menu
-                    RankingPage rankingPage = new RankingPage(); // Navigate to the ranking page
+                    dispose();
+                    RankingPage rankingPage = new RankingPage();
                     rankingPage.setVisible(true);
                     break;
                 case "Liste des parties":
-                    dispose(); // Close the main menu
-                    OngoingGamesPage ongoingGamesPage = new OngoingGamesPage(); // Navigate to the ongoing games page
+                    dispose();
+                    OngoingGamesPage ongoingGamesPage = new OngoingGamesPage();
                     ongoingGamesPage.setVisible(true);
                     break;
             }

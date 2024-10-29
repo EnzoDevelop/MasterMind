@@ -19,7 +19,7 @@ public class Essai {
         this.num_tour = num_tour;
         this.verif_essai = verif_essai;
         this.couleurs_essai = couleurs_essai;
-        this.id_joueur = id_joueur; // Add this line if it exists
+        this.id_joueur = id_joueur;
         this.id_partie = id_partie;
     }
 
@@ -75,7 +75,6 @@ public class Essai {
         this.id_partie = id_partie;
     }
 
-    // Méthode pour insérer l'essai dans la base de données
     public void insererEssaiDansBDD() {
         String insertEssaiSQL = "INSERT INTO Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai, id_partie, id_joueur) VALUES (?, ?, ?, ?, ?, ?, ?)";
 

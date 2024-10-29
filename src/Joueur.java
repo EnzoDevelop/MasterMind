@@ -7,7 +7,6 @@ public class Joueur {
     private int id_joueur;
     private String nom;
 
-    // Constructeur
     public Joueur(String nom) {
         this.nom = nom;
         insererJoueurDansBDD();
