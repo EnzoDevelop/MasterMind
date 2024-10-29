@@ -195,23 +195,45 @@ public class MasterMindGame extends JFrame {
             JPanel messagePanel = new JPanel();
             messagePanel.add(new JLabel("C'est gagné !"));
 
-            JButton MainMenuButton = new JButton("Retour à l'accueil");
-            MainMenuButton.addActionListener(e -> MainMenu());
-            messagePanel.add(MainMenuButton);
+            JButton mainMenuButton = new JButton("Retour à l'accueil");
+            mainMenuButton.addActionListener(e -> MainMenu());
+            messagePanel.add(mainMenuButton);
 
             JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
         } else {
             resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
 
             if (essaiCourant >= nombreEssais) {
-                JOptionPane.showMessageDialog(this, "Vous avez perdu ! La solution était : " + solutionCode, "Défaite", JOptionPane.INFORMATION_MESSAGE);
+                // Création d'un panel pour afficher la solution avec des cases de couleurs
+                JPanel messagePanel = new JPanel(new BorderLayout(10, 10));
+                messagePanel.add(new JLabel("Vous avez perdu ! La solution était :"), BorderLayout.NORTH);
+
+                // Panel pour les cases de couleurs
+                JPanel colorSolutionPanel = new JPanel(new FlowLayout());
+                for (char code : solutionCode.toCharArray()) {
+                    int key = Character.getNumericValue(code);
+                    String colorName = colorMap.get(key);
+                    Color color = colorDisplayMap.get(colorName);
+
+                    JPanel colorSquare = new JPanel();
+                    colorSquare.setBackground(color);
+                    colorSquare.setPreferredSize(new Dimension(40, 40));
+                    colorSquare.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+                    colorSolutionPanel.add(colorSquare);
+                }
+
+                messagePanel.add(colorSolutionPanel, BorderLayout.CENTER);
+
+                JOptionPane.showMessageDialog(this, messagePanel, "Défaite", JOptionPane.INFORMATION_MESSAGE);
                 MainMenu();
             }
+
         }
 
         currentSelection.clear();
         updateSelectionDisplay();
     }
+
 
 
 
