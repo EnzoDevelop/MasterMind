@@ -87,7 +87,7 @@ public class Essai {
             pstmt.setBoolean(4, verif_essai);
             pstmt.setString(5, couleurs_essai);
             pstmt.setInt(6, id_partie);
-            pstmt.setInt(7, id_joueur); // Ajoutez cette ligne pour définir id_joueur
+            pstmt.setInt(7, id_joueur);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

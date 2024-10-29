@@ -19,7 +19,6 @@ public class OngoingGamesPage extends JFrame {
         ongoingGamesArea.setBackground(new Color(99, 110, 114));
         ongoingGamesArea.setForeground(Color.WHITE);
 
-        // Here you would retrieve and display the ongoing games
         ongoingGamesArea.setText("Liste des Parties en Cours\n\n");
         ongoingGamesArea.append("Partie 1: Joueur1 vs Joueur2\n");
         ongoingGamesArea.append("Partie 2: Joueur3 vs Joueur4\n");

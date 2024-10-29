@@ -141,7 +141,6 @@ public class Partie {
         }
     }
 
-    // Méthode pour mettre à jour la partie à la fin du jeu
     public void miseAJourPartieDansBDD() {
         String updatePartieSQL = "UPDATE Partie SET date_fin = ?, etat_partie = ?, nb_essai = ? WHERE id_partie = ?";
 

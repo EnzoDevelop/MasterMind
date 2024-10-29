@@ -21,7 +21,6 @@ public class RankingPage extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Fetch the players from the database
         PlayerDAO playerDAO = new PlayerDAO();
         List<String> players = playerDAO.getPlayers();
 

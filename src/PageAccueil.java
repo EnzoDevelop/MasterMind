@@ -76,7 +76,6 @@ public class PageAccueil extends JFrame {
 
         add(mainPanel);
 
-        // Ajout d'une action pour le bouton "Commencer la Partie"
         commencerButton.addActionListener(e -> {
             String positionsText = positionsField.getText();
             String essaisText = essaisField.getText();

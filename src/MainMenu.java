@@ -33,7 +33,6 @@ public class MainMenu extends JFrame {
         gbc.gridy = 2; // move to the next row
         mainPanel.add(ongoingGamesButton, gbc);
 
-        // Add main panel to the frame
         add(mainPanel);
     }
 

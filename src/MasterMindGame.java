@@ -101,7 +101,7 @@ public class MasterMindGame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(resultatArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout()); // Use FlowLayout for centering
+        JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.setBackground(new Color(45, 52, 54));
         buttonPanel.add(validerButton);
         buttonPanel.add(nouvellePartieButton);
