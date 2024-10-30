@@ -50,6 +50,17 @@ public class JeuMasterMind extends JFrame {
         int solution = Integer.parseInt(solutionBuilder.toString());
         partie = PartieFactory.createPartie(1, solution, new Timestamp(System.currentTimeMillis()), null, essais, positions, "En cours");
 
+        List<Integer> idsJoueurs = new ArrayList<>();
+        for (Joueur joueur : joueurs) {
+            Integer idJoueur = Joueur.getIdParNom(joueur.getNom());
+            if (idJoueur != null) {
+                idsJoueurs.add(idJoueur);
+            }
+        }
+
+        Inscrit.ajouterJoueursDansPartie(partie.getIdPartie(), idsJoueurs);
+
+
         setTitle("MasterMind - " + this.joueurs.size() + " Joueurs");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);

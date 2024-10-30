@@ -11,8 +11,6 @@ public class Joueur {
         this.nom = nom;
         if (!existeDeja(nom)) {
             insererJoueurDansBDD();
-        } else {
-            System.out.println("Le joueur avec le nom " + nom + " existe déjà dans la base de données. Insertion annulée.");
         }
     }
 
@@ -40,14 +38,21 @@ public class Joueur {
              PreparedStatement pstmt = conn.prepareStatement(insertJoueurSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, this.nom);
-            pstmt.executeUpdate();
 
 
+            int rowsAffected = pstmt.executeUpdate();
+            int dernierId = 0;
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id_joueur = generatedKeys.getInt(1);
+                    dernierId = generatedKeys.getInt(1);
+                    System.out.println("Dernier ID inséré : " + dernierId);
+                } else {
+                    System.out.println("Aucun ID généré.");
                 }
             }
+            System.out.println("Rows affected: " + rowsAffected);
+            this.id_joueur = dernierId;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +67,7 @@ public class Joueur {
             pstmt.setString(1, nom);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next(); // Renvoie vrai si un résultat existe, donc le nom est déjà dans la BDD
+                return rs.next();// Renvoie vrai si un résultat existe, donc le nom est déjà dans la BDD
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,5 +75,23 @@ public class Joueur {
         }
     }
 
+    public static Integer getIdParNom(String nom) {
+        String rechercherIdSQL = "SELECT id_joueur FROM Joueurs WHERE pseudo_joueur = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(rechercherIdSQL)) {
+
+            pstmt.setString(1, nom);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_joueur"); // Retourne l'ID du joueur
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Retourne null si le joueur n'existe pas
+    }
 
 }

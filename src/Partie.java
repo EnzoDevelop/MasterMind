@@ -164,5 +164,21 @@ public class Partie {
             e.printStackTrace();
         }
     }
+
+    public boolean addPlayerToPartie(int idJoueur, int idPartie) {
+        String query = "INSERT INTO inscrit (id_joueur, id_partie, score) VALUES (?, ?, 'en cours')";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, idJoueur);
+            statement.setInt(2, idPartie);
+            statement.executeUpdate();
+            return true; // Succès de l'insertion
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Échec de l'insertion
+        }
+    }
 }
 
