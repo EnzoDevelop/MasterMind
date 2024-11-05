@@ -1,3 +1,9 @@
+package vues;
+
+import modeles.Inscrit;
+import modeles.Joueur;
+import modeles.Partie;
+import modeles.PartieFactory;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -100,7 +106,7 @@ public class JeuMasterMind extends JFrame {
         displaySelectionPanel.setBackground(Color.LIGHT_GRAY);
         selectionPanel.add(displaySelectionPanel);
 
-        validerButton = new JButton("Valider Essai");
+        validerButton = new JButton("Valider modeles.Essai");
         validerButton.setBackground(new Color(178, 190, 195));
         validerButton.setFocusPainted(false);
         validerButton.addActionListener(e -> validerEssai());
@@ -111,7 +117,7 @@ public class JeuMasterMind extends JFrame {
         resultatArea.setBackground(new Color(99, 110, 114));
         resultatArea.setForeground(Color.WHITE);
 
-        nouvellePartieButton = new JButton("Nouvelle Partie");
+        nouvellePartieButton = new JButton("Nouvelle modeles.Partie");
         nouvellePartieButton.setBackground(new Color(178, 190, 195));
         nouvellePartieButton.setFocusPainted(false);
         nouvellePartieButton.addActionListener(e -> MainMenu());
@@ -214,7 +220,7 @@ public class JeuMasterMind extends JFrame {
 
             JOptionPane.showMessageDialog(this, messagePanel, "Victoire", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            resultatArea.append("Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
+            resultatArea.append("modeles.Essai : " + String.join(", ", essaiCouleurs) + " -> Bien placés: " + bienPlaces + ", Mal placés: " + malPlaces + "\n");
 
             if (essaiCourant >= nombreEssais) {
                 partie.setEtatPartie("fini");

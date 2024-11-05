@@ -1,3 +1,7 @@
+package modeles;
+
+import utils.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -76,7 +80,7 @@ public class Essai {
     }
 
     public void insererEssaiDansBDD() {
-        String insertEssaiSQL = "INSERT INTO Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai, id_partie, id_joueur) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertEssaiSQL = "INSERT INTO modeles.Essai (bien_places, mal_places, num_tour, verif_essai, couleurs_essai, id_partie, id_joueur) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertEssaiSQL)) {

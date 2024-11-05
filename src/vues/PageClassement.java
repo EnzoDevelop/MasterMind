@@ -1,3 +1,7 @@
+package vues;
+
+import modeles.Joueur;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -21,10 +25,9 @@ public class PageClassement extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JoueurDAO playerDAO = new JoueurDAO();
-        List<String> players = playerDAO.getPlayers();
+        List<String> players = Joueur.getPlayers();
 
-        String[] columnNames = {"Pseudo Joueur", "Partie Gagnée", "Partie Perdu"};
+        String[] columnNames = {"Pseudo Joueur", "Parties Gagnées", "Parties Perdues"};
 
         String[][] tableData = new String[players.size()][3];
         for (int i = 0; i < players.size(); i++) {

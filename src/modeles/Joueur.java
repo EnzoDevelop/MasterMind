@@ -1,7 +1,13 @@
+package modeles;
+
+import utils.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Joueur {
     private int id_joueur;
@@ -30,7 +36,6 @@ public class Joueur {
         System.out.println("Nom Joueur: " + nom);
     }
 
-
     private void insererJoueurDansBDD() {
         String insertJoueurSQL = "INSERT INTO Joueurs (pseudo_joueur) VALUES (?)";
 
@@ -39,19 +44,16 @@ public class Joueur {
 
             pstmt.setString(1, this.nom);
 
-
             int rowsAffected = pstmt.executeUpdate();
-            int dernierId = 0;
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    dernierId = generatedKeys.getInt(1);
-                    System.out.println("Dernier ID inséré : " + dernierId);
+                    this.id_joueur = generatedKeys.getInt(1);
+                    System.out.println("Dernier ID inséré : " + this.id_joueur);
                 } else {
                     System.out.println("Aucun ID généré.");
                 }
             }
             System.out.println("Rows affected: " + rowsAffected);
-            this.id_joueur = dernierId;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +69,7 @@ public class Joueur {
             pstmt.setString(1, nom);
 
             try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next();// Renvoie vrai si un résultat existe, donc le nom est déjà dans la BDD
+                return rs.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,14 +86,30 @@ public class Joueur {
             pstmt.setString(1, nom);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("id_joueur"); // Retourne l'ID du joueur
+                    return rs.getInt("id_joueur");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return null; // Retourne null si le joueur n'existe pas
+        return null;
     }
 
+    public static List<String> getPlayers() {
+        List<String> players = new ArrayList<>();
+        String query = "SELECT pseudo_joueur FROM Joueurs";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                String pseudo = resultSet.getString("pseudo_joueur");
+                players.add(pseudo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return players;
+    }
 }

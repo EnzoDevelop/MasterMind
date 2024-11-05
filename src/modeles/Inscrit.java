@@ -1,3 +1,7 @@
+package modeles;
+
+import utils.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,10 +18,10 @@ public class Inscrit {
             for (int idJoueur : idsJoueurs) {
                 pstmt.setInt(1, idPartie);
                 pstmt.setInt(2, idJoueur);
-                pstmt.addBatch(); // Ajout de chaque insertion au lot
+                pstmt.addBatch();
             }
 
-            pstmt.executeBatch(); // Exécute toutes les insertions en une seule fois
+            pstmt.executeBatch();
             System.out.println("Tous les joueurs ont été ajoutés à la partie.");
 
         } catch (SQLException e) {

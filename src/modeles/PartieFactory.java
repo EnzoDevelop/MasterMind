@@ -1,3 +1,5 @@
+package modeles;
+
 import java.sql.Timestamp;
 
 public class PartieFactory {

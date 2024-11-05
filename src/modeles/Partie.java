@@ -1,4 +1,10 @@
+package modeles;
+
+import utils.DatabaseConnection;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Partie {
 
@@ -22,6 +28,7 @@ public class Partie {
         insererPartieDansBDD();
     }
 
+    // Getters et Setters
     public int getIdPartie() {
         return idPartie;
     }
@@ -50,7 +57,7 @@ public class Partie {
         this.date_fin = date_fin;
     }
 
-    public int getNbEssaie() {
+    public int getNbEssai() {
         return nb_essai;
     }
 
@@ -103,25 +110,24 @@ public class Partie {
                 }
             }
         }
-
         return resultat.toString();
     }
 
     public void afficherInfos() {
         System.out.println("ID Partie : " + idPartie);
         System.out.println("Solution : " + solution);
-        System.out.println("Date de debut de partie : " + date_debut);
+        System.out.println("Date de début de partie : " + date_debut);
         System.out.println("Date de fin de partie : " + date_fin);
-        System.out.println("Nombre d'essai de la partie : " + nb_essai);
-        System.out.println("Nombre de position de la solution : " + nb_position);
-        System.out.println("Etat de la partie : " + etat_partie);
+        System.out.println("Nombre d'essais de la partie : " + nb_essai);
+        System.out.println("Nombre de positions de la solution : " + nb_position);
+        System.out.println("État de la partie : " + etat_partie);
     }
 
     private void insererPartieDansBDD() {
         String insertPartieSQL = "INSERT INTO Partie (solution, date_debut, date_fin, nb_essai, nb_position, etat_partie) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(insertPartieSQL,PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement pstmt = conn.prepareStatement(insertPartieSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, this.solution);
             pstmt.setTimestamp(2, this.date_debut);
@@ -131,30 +137,28 @@ public class Partie {
             pstmt.setString(6, this.etat_partie);
 
             int rowsAffected = pstmt.executeUpdate();
-            int dernierId = 0;
-            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    dernierId = generatedKeys.getInt(1);
-                    System.out.println("Dernier ID inséré : " + dernierId);
-                } else {
-                    System.out.println("Aucun ID généré.");
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        this.idPartie = generatedKeys.getInt(1);
+                        System.out.println("Dernier ID inséré : " + idPartie);
+                    } else {
+                        System.out.println("Aucun ID généré.");
+                    }
                 }
             }
-            System.out.println("Rows affected: " + rowsAffected);
-            this.idPartie = dernierId;
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
+    // Méthode pour mettre à jour les infos de la partie
     public void miseAJourPartieDansBDD() {
         String updatePartieSQL = "UPDATE Partie SET date_fin = ?, etat_partie = ? WHERE id_partie = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection()){
-             System.out.println("coucou");
-             System.out.println(this.idPartie);
-             PreparedStatement pstmt = conn.prepareStatement(updatePartieSQL);
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updatePartieSQL)) {
+
             pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
             pstmt.setString(2, this.etat_partie);
             pstmt.setInt(3, this.idPartie);
@@ -165,20 +169,46 @@ public class Partie {
         }
     }
 
-    public boolean addPlayerToPartie(int idJoueur, int idPartie) {
+    // Méthode pour ajouter un joueur à une partie
+    public boolean addPlayerToPartie(int idJoueur) {
         String query = "INSERT INTO inscrit (id_joueur, id_partie, score) VALUES (?, ?, 'en cours')";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, idJoueur);
-            statement.setInt(2, idPartie);
+            statement.setInt(2, this.idPartie);
             statement.executeUpdate();
-            return true; // Succès de l'insertion
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Échec de l'insertion
+            return false;
         }
     }
-}
 
+    public static List<Partie> getParties() {
+        List<Partie> parties = new ArrayList<>();
+        String query = "SELECT * FROM Partie";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int idPartie = resultSet.getInt("id_partie");
+                int solution = resultSet.getInt("solution");
+                Timestamp dateDebut = resultSet.getTimestamp("date_debut");
+                Timestamp dateFin = resultSet.getTimestamp("date_fin");
+                int nbEssai = resultSet.getInt("nb_essai");
+                int nbPosition = resultSet.getInt("nb_position");
+                String etatPartie = resultSet.getString("etat_partie");
+
+                Partie partie = new Partie(idPartie, solution, dateDebut, dateFin, nbEssai, nbPosition, etatPartie);
+                parties.add(partie);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parties;
+    }
+}

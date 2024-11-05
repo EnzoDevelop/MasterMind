@@ -1,3 +1,6 @@
+package vues;
+
+import modeles.Joueur;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -49,7 +52,7 @@ public class PageCreationPartie extends JFrame {
         joueursField.setForeground(Color.WHITE);
         joueursField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        JButton commencerButton = new JButton("Commencer la Partie");
+        JButton commencerButton = new JButton("Commencer Partie");
         commencerButton.setFont(new Font("SansSerif", Font.BOLD, 20));
         commencerButton.setBackground(new Color(178, 190, 195));
         commencerButton.setForeground(Color.BLACK);
